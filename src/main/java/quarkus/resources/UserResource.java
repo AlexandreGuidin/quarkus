@@ -1,12 +1,13 @@
 package quarkus.resources;
 
+import quarkus.model.entity.UserEntity;
+import quarkus.model.to.UserRequest;
 import quarkus.model.to.UserResponse;
 import quarkus.repository.UserRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,10 +36,14 @@ public class UserResource {
         return new UserResponse(userRepository.findById(id));
     }
 
-//    @GET
-//    @Produces("application/json")
-//    @Consumes("application/json")
-//    public UserResponse save(UserRequest request) {
-//        return new UserResponse();
-//    }
+    @POST
+    @Produces("application/json")
+    @Consumes("application/json")
+    @Transactional
+    public UserResponse save(@Valid UserRequest request) {
+        System.out.println(request);
+        UserEntity entity = new UserEntity(request);
+        userRepository.persist(entity);
+        return new UserResponse(entity);
+    }
 }

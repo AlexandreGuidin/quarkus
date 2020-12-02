@@ -1,5 +1,7 @@
 package quarkus.model.entity;
 
+import quarkus.model.to.UserRequest;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,6 +22,15 @@ public class UserEntity {
 
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(UserRequest userRequest) {
+        this.id = UUID.randomUUID();
+        this.documentNumber = userRequest.getDocumentNumber();
+        this.createdAt = ZonedDateTime.now();
+    }
 
     public UUID getId() {
         return id;

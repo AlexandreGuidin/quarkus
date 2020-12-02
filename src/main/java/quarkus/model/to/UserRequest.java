@@ -1,14 +1,17 @@
 package quarkus.model.to;
 
-public class UserRequest {
-    private String name;
+import javax.validation.constraints.NotEmpty;
 
-    public String getName() {
-        return name;
+public class UserRequest {
+    @NotEmpty
+    private String documentNumber;
+
+    public String getDocumentNumber() {
+        return documentNumber;
     }
 
-    public UserRequest setName(String name) {
-        this.name = name;
+    public UserRequest setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
         return this;
     }
 }
