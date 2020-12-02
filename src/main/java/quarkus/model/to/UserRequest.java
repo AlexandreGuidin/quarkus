@@ -1,4 +1,4 @@
-package guidin.model.to;
+package quarkus.model.to;
 
 public class UserRequest {
     private String name;

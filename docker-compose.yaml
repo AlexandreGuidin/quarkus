@@ -1,6 +1,15 @@
 version: '3'
 services:
 
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=db_quarkus
+
 #  postgres-native:
 #    image: postgres:12-alpine
 #    ports:
@@ -10,8 +19,8 @@ services:
 #      - POSTGRES_PASSWORD=root
 #      - POSTGRES_DB=db_native
 
-  native:
-    image: quarkus-native:1.0.0
+#  native:
+#    image: quarkus-native:1.0.0
 #    ports:
 #      - "8080:8080"
 #    environment:
@@ -28,8 +37,8 @@ services:
 #      - POSTGRES_PASSWORD=root
 #      - POSTGRES_DB=db_jvm
 
-  jvm:
-    image: quarkus-jvm:1.0.0
+#  jvm:
+#    image: quarkus-jvm:1.0.0
 #    ports:
 #      - "8080:8080"
 #    environment:
