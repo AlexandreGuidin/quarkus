@@ -1,8 +1,10 @@
 package quarkus.model.entity;
 
+import quarkus.config.converter.UserInfoConverter;
 import quarkus.model.to.UserRequest;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.ZonedDateTime;
@@ -19,6 +21,10 @@ public class UserEntity {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
+
+    @Convert(converter = UserInfoConverter.class)
+    @Column(columnDefinition = "jsonb")
+    private UserInfo info;
 
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
@@ -56,6 +62,15 @@ public class UserEntity {
 
     public UserEntity setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
+    }
+
+    public UserInfo getInfo() {
+        return info;
+    }
+
+    public UserEntity setInfo(UserInfo info) {
+        this.info = info;
         return this;
     }
 

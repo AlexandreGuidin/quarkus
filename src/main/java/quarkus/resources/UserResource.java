@@ -1,6 +1,8 @@
 package quarkus.resources;
 
+import org.jboss.logging.Logger;
 import quarkus.model.entity.UserEntity;
+import quarkus.model.exception.ApiException;
 import quarkus.model.to.UserRequest;
 import quarkus.model.to.UserResponse;
 import quarkus.repository.UserRepository;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Path("/user")
 public class UserResource {
+    private static final Logger logger = Logger.getLogger(UserResource.class);
 
     private final UserRepository userRepository;
 
@@ -33,7 +36,9 @@ public class UserResource {
     @Path("/{id}")
     @Produces("application/json")
     public UserResponse findById(@PathParam("id") UUID id) {
-        return new UserResponse(userRepository.findById(id));
+        return userRepository.findByIdOptional(id)
+                .map(UserResponse::new)
+                .orElseThrow(NotFoundException::new);
     }
 
     @POST
@@ -41,7 +46,6 @@ public class UserResource {
     @Consumes("application/json")
     @Transactional
     public UserResponse save(@Valid UserRequest request) {
-        System.out.println(request);
         UserEntity entity = new UserEntity(request);
         userRepository.persist(entity);
         return new UserResponse(entity);

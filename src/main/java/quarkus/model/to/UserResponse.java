@@ -8,11 +8,13 @@ import java.util.UUID;
 public class UserResponse {
     private UUID id;
     private String documentNumber;
+    private UserInfoResponse info;
     private ZonedDateTime createdAt;
 
     public UserResponse(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.documentNumber = userEntity.getDocumentNumber();
+        this.info = new UserInfoResponse(userEntity.getInfo());
         this.createdAt = userEntity.getCreatedAt();
     }
 
@@ -31,6 +33,15 @@ public class UserResponse {
 
     public UserResponse setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
+        return this;
+    }
+
+    public UserInfoResponse getInfo() {
+        return info;
+    }
+
+    public UserResponse setInfo(UserInfoResponse info) {
+        this.info = info;
         return this;
     }
 
