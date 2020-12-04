@@ -2,6 +2,7 @@ package quarkus.model.to;
 
 import quarkus.model.entity.UserEntity;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ public class UserResponse {
     private UUID id;
     private String documentNumber;
     private UserInfoResponse info;
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
     private ZonedDateTime createdAt;
 
     public UserResponse(UserEntity userEntity) {
