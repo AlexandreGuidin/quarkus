@@ -36,6 +36,7 @@ public class UserEntity {
         this.id = UUID.randomUUID();
         this.documentNumber = userRequest.getDocumentNumber();
         this.createdAt = ZonedDateTime.now();
+        this.info = new UserInfo(userRequest);
     }
 
     public UUID getId() {

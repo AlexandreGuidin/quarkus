@@ -1,10 +1,20 @@
 package quarkus.model.entity;
 
+import quarkus.model.to.UserRequest;
+
 import java.util.Objects;
 
 public class UserInfo {
     private String name;
     private String email;
+
+    public UserInfo() {
+    }
+
+    public UserInfo(UserRequest userRequest) {
+        this.name = userRequest.getName();
+        this.email = userRequest.getEmail();
+    }
 
     public String getName() {
         return name;

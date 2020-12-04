@@ -1,13 +1,11 @@
 package quarkus.resources;
 
 import org.jboss.logging.Logger;
-import quarkus.model.entity.UserEntity;
-import quarkus.model.exception.ApiException;
 import quarkus.model.to.UserRequest;
 import quarkus.model.to.UserResponse;
 import quarkus.repository.UserRepository;
+import quarkus.service.UserService;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import java.util.List;
@@ -19,9 +17,11 @@ public class UserResource {
     private static final Logger logger = Logger.getLogger(UserResource.class);
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserResource(UserRepository userRepository) {
+    public UserResource(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GET
@@ -44,10 +44,7 @@ public class UserResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    @Transactional
     public UserResponse save(@Valid UserRequest request) {
-        UserEntity entity = new UserEntity(request);
-        userRepository.persist(entity);
-        return new UserResponse(entity);
+        return userService.save(request);
     }
 }
