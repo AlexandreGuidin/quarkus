@@ -1,7 +1,6 @@
 package quarkus.config.exception;
 
 import org.jboss.logging.Logger;
-import quarkus.resources.UserResource;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -9,7 +8,7 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
-    private static final Logger logger = Logger.getLogger(UserResource.class);
+    private static final Logger logger = Logger.getLogger(RuntimeExceptionMapper.class);
 
     @Override
     public Response toResponse(RuntimeException exception) {
