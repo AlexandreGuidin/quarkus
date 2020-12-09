@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import quarkus.config.BaseResourceTest;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static quarkus.config.JsonMatcher.equalToJson;
 
 
 @QuarkusTest
@@ -17,7 +17,8 @@ public class UserResourceTest extends BaseResourceTest {
     @Test
     public void list_empty() {
         given()
-                .when().get("/user")
+                .when()
+                .get("/user")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -36,8 +37,7 @@ public class UserResourceTest extends BaseResourceTest {
                 .body("id", notNullValue())
                 .body("created_at", notNullValue())
                 .body("document_number", is("123"))
-                .body("info.email", is("test@test.com"))
-                .body("info.name", is("Test"));
+                .body("info", equalToJson("json/resource/user/response/save_success_info.json"));
     }
 
     @Test
@@ -49,6 +49,6 @@ public class UserResourceTest extends BaseResourceTest {
                 .then()
                 .statusCode(422)
                 .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("json/resource/user/response/save_invalid_fields.json"));
+                .body(equalToJson("json/resource/user/response/save_invalid_fields.json"));
     }
 }
