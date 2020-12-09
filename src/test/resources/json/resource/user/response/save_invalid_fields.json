@@ -1,0 +1,12 @@
+[
+  {
+    "field": "documentNumber",
+    "message": "must not be empty",
+    "value": ""
+  },
+  {
+    "field": "name",
+    "message": "must not be empty",
+    "value": ""
+  }
+]
