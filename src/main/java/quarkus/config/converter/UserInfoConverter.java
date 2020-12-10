@@ -1,19 +1,25 @@
 package quarkus.config.converter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import quarkus.config.JsonConfig;
 import quarkus.model.entity.UserInfo;
+import quarkus.model.exception.ApiException;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class UserInfoConverter implements AttributeConverter<UserInfo, String> {
-    private static final Jsonb jsonb = JsonbBuilder.create();
+    private final ObjectMapper objectMapper = JsonConfig.build();
 
     @Override
     public String convertToDatabaseColumn(UserInfo attribute) {
-        return jsonb.toJson(attribute);
+        try {
+            return objectMapper.writeValueAsString(attribute);
+        } catch (JsonProcessingException e) {
+            throw new ApiException(e);
+        }
     }
 
     @Override
@@ -21,7 +27,11 @@ public class UserInfoConverter implements AttributeConverter<UserInfo, String> {
         if (dbData == null) {
             return null;
         }
-        return jsonb.fromJson(dbData, UserInfo.class);
+        try {
+            return objectMapper.readValue(dbData, UserInfo.class);
+        } catch (JsonProcessingException e) {
+            throw new ApiException(e);
+        }
     }
 }
 

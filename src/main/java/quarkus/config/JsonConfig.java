@@ -1,18 +1,27 @@
 package quarkus.config;
 
 
-import io.quarkus.jsonb.JsonbConfigCustomizer;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import io.quarkus.jackson.ObjectMapperCustomizer;
 
 import javax.inject.Singleton;
-import javax.json.bind.JsonbConfig;
 
-import static javax.json.bind.JsonbConfig.PROPERTY_NAMING_STRATEGY;
-import static javax.json.bind.config.PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Singleton
-public class JsonConfig implements JsonbConfigCustomizer {
+public class JsonConfig implements ObjectMapperCustomizer {
 
-    public void customize(JsonbConfig config) {
-        config.setProperty(PROPERTY_NAMING_STRATEGY, LOWER_CASE_WITH_UNDERSCORES);
+    @Override
+    public void customize(ObjectMapper objectMapper) {
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    public static ObjectMapper build() {
+        JsonConfig jsonConfig = new JsonConfig();
+        ObjectMapper objectMapper = new ObjectMapper();
+        jsonConfig.customize(objectMapper);
+        return objectMapper;
     }
 }

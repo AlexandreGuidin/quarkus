@@ -1,7 +1,6 @@
 package quarkus.config;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+
 import java.io.IOException;
 import java.util.Objects;
 

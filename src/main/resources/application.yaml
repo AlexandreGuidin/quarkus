@@ -31,23 +31,22 @@ quarkus:
       "liquibase":
         level: WARN
 
+
+  #Swagger UI & OpenAPI
   smallrye-openapi:
     path: /docs
-    enable: ${ENABLE_OPENAPI:false}
-  #Swagger UI
+    enable: ${ENABLE_OPENAPI:true}
   swagger-ui:
-    title: Example API
-    theme: newspaper
+    title: Quarkus API Docs
     path: /api-docs
+    theme: original
     enable: ${ENABLE_OPENAPI:true}
 
 
-#OpenAPI
-smallrye-openapi:
-  enable: ${ENABLE_OPENAPI:false}
+#OpenAPI additional Config
 mp:
   openapi:
     extensions:
       smallrye:
         info:
-          title: Example API
+          title: Quarkus API
