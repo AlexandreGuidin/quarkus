@@ -1,5 +1,10 @@
 package quarkus.resources;
 
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import quarkus.model.ValidationError;
 import quarkus.model.to.UserRequest;
 import quarkus.model.to.UserResponse;
 import quarkus.repository.UserRepository;
@@ -15,6 +20,7 @@ import java.util.stream.Collectors;
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "User")
 public class UserResource {
     private final UserRepository userRepository;
     private final UserService userService;
@@ -25,6 +31,8 @@ public class UserResource {
     }
 
     @GET
+    @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse[].class)))
+    @APIResponse(responseCode = "500", description = "Internal error")
     public List<UserResponse> list() {
         return userRepository.streamAll()
                 .map(UserResponse::new)
@@ -33,6 +41,9 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
+    @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @APIResponse(responseCode = "404", description = "Not found")
+    @APIResponse(responseCode = "500", description = "Internal error")
     public UserResponse findById(@PathParam("id") UUID id) {
         return userRepository.findByIdOptional(id)
                 .map(UserResponse::new)
@@ -40,6 +51,9 @@ public class UserResource {
     }
 
     @POST
+    @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @APIResponse(responseCode = "422", content = @Content(schema = @Schema(implementation = ValidationError[].class)))
+    @APIResponse(responseCode = "500", description = "Internal error")
     public UserResponse save(@Valid UserRequest request) {
         return userService.save(request);
     }
