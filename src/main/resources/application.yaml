@@ -42,11 +42,24 @@ quarkus:
     theme: original
     enable: ${ENABLE_OPENAPI:true}
 
+smallrye:
+  jwt:
+    new-token:
+      issuer: ${APP_JWT_ISSUER:https://quarkus.io}
+      lifespan: ${APP_JWT_EXP_SECONDS:900}
 
-#OpenAPI additional Config
+#Microprofile Configs, - OpenAPI, JWT
 mp:
+  jwt:
+    verify:
+      issuer: ${APP_JWT_ISSUER:https://quarkus.io}
   openapi:
     extensions:
       smallrye:
         info:
           title: Quarkus API
+
+#Application Props
+app:
+  security:
+    jwt-secret: ${APP_JWT_SECRET:secret_secret_secret_secret_secret}

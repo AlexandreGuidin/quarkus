@@ -13,6 +13,11 @@ public class UserRequest {
     @Email(message = "invalid")
     private String email;
 
+    @NotEmpty
+    private String password;
+
+    private String passwordHash;
+
     public String getDocumentNumber() {
         return documentNumber;
     }
@@ -37,6 +42,24 @@ public class UserRequest {
 
     public UserRequest setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserRequest setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public UserRequest setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
         return this;
     }
 }

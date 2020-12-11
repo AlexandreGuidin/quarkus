@@ -19,6 +19,9 @@ public class UserEntity {
     @Column(name = "document_number")
     private String documentNumber;
 
+    @Column
+    private String password;
+
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
@@ -35,6 +38,7 @@ public class UserEntity {
     public UserEntity(UserRequest userRequest) {
         this.id = UUID.randomUUID();
         this.documentNumber = userRequest.getDocumentNumber();
+        this.password = userRequest.getPasswordHash();
         this.createdAt = ZonedDateTime.now();
         this.info = new UserInfo(userRequest);
     }
@@ -72,6 +76,15 @@ public class UserEntity {
 
     public UserEntity setInfo(UserInfo info) {
         this.info = info;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserEntity setPassword(String password) {
+        this.password = password;
         return this;
     }
 
