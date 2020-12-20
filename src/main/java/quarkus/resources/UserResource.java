@@ -1,5 +1,6 @@
 package quarkus.resources;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -10,6 +11,9 @@ import quarkus.model.to.UserResponse;
 import quarkus.repository.UserRepository;
 import quarkus.service.UserService;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,8 +24,10 @@ import java.util.stream.Collectors;
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RequestScoped
 @Tag(name = "User")
 public class UserResource {
+
     private final UserRepository userRepository;
     private final UserService userService;
 
@@ -31,6 +37,7 @@ public class UserResource {
     }
 
     @GET
+    @RolesAllowed({ "User", "Admin" })
     @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse[].class)))
     @APIResponse(responseCode = "500", description = "Internal error")
     public List<UserResponse> list() {
@@ -41,6 +48,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "User", "Admin" })
     @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @APIResponse(responseCode = "404", description = "Not found")
     @APIResponse(responseCode = "500", description = "Internal error")
@@ -51,6 +59,7 @@ public class UserResource {
     }
 
     @POST
+    @RolesAllowed({ "User", "Admin" })
     @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @APIResponse(responseCode = "422", content = @Content(schema = @Schema(implementation = ValidationError[].class)))
     @APIResponse(responseCode = "500", description = "Internal error")

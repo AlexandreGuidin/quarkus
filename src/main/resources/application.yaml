@@ -1,4 +1,7 @@
 quarkus:
+  http:
+    port: 8080
+    read-timeout: 10S
   banner:
     enabled: false
 
@@ -28,6 +31,8 @@ quarkus:
       color: true
       format: "{\"level\": \"%p\", \"at\": \"%d{yyyy-MM-dd'T'HH:mm:ssZ}\", \"class\": \"%C\", \"message\": \"%s\", \"error\": \"%e\"}%n"
     category:
+      "io.quarkus.smallrye.jwt.runtime.auth.MpJwtValidator":
+        level: TRACE
       "liquibase":
         level: WARN
 
@@ -44,6 +49,12 @@ quarkus:
 
 smallrye:
   jwt:
+    sign:
+      key-location: ${JWT_PRIVATE_KEY_PATH:keys/private_key.pem}
+    verify:
+      key:
+        location: ${JWT_PUBLIC_KEY_PATH:keys/public_key.pem}
+        key-format: PEM_KEY
     new-token:
       issuer: ${APP_JWT_ISSUER:https://quarkus.io}
       lifespan: ${APP_JWT_EXP_SECONDS:900}
@@ -52,14 +63,12 @@ smallrye:
 mp:
   jwt:
     verify:
-      issuer: ${APP_JWT_ISSUER:https://quarkus.io}
+      publickey:
+        location: ${JWT_PUBLIC_KEY_PATH:keys/public_key.pem}
+      issuer: ${JWT_ISSUER:https://quarkus.io}
   openapi:
     extensions:
       smallrye:
         info:
           title: Quarkus API
 
-#Application Props
-app:
-  security:
-    jwt-secret: ${APP_JWT_SECRET:secret_secret_secret_secret_secret}

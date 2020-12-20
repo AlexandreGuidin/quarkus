@@ -6,6 +6,8 @@ import org.jboss.logging.Logger;
 import quarkus.model.to.AuthenticationRequest;
 import quarkus.security.JwtUtils;
 
+import javax.annotation.security.PermitAll;
+import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,15 +16,16 @@ import java.util.Base64;
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RequestScoped
 @Tag(name = "Authentication")
 public class AuthenticationResource {
     private static final Logger logger = Logger.getLogger(AuthenticationRequest.class);
     private final Response UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).build();
 
-    @ConfigProperty(name = "app.security.jwt-secret")
-    private String jwtSecret;
+
 
     @POST
+    @PermitAll
     public Response authenticate(@HeaderParam("Authorization") String basicAuth) {
         if (basicAuth == null || basicAuth.isEmpty()) {
             return UNAUTHORIZED;
@@ -36,7 +39,7 @@ public class AuthenticationResource {
 
         //TODO find by email
 
-        String jwt = JwtUtils.buildJwt(jwtSecret, "id");
+        String jwt = JwtUtils.buildJwt( "id");
         return Response.ok().header("Authorization", jwt).build();
     }
 }
