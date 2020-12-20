@@ -12,7 +12,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
 
     @Override
     public Response toResponse(RuntimeException exception) {
-        logger.error(exception);
+        logger.error(String.format("unexpect runtime exception: %s", exception.getMessage()), exception);
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 }

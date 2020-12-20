@@ -31,8 +31,6 @@ quarkus:
       color: true
       format: "{\"level\": \"%p\", \"at\": \"%d{yyyy-MM-dd'T'HH:mm:ssZ}\", \"class\": \"%C\", \"message\": \"%s\", \"error\": \"%e\"}%n"
     category:
-      "io.quarkus.smallrye.jwt.runtime.auth.MpJwtValidator":
-        level: TRACE
       "liquibase":
         level: WARN
 

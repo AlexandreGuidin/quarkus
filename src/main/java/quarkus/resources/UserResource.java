@@ -47,8 +47,17 @@ public class UserResource {
     }
 
     @GET
+    @Path("/filter")
+//    @RolesAllowed({ "User", "Admin" })
+    @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse[].class)))
+    @APIResponse(responseCode = "500", description = "Internal error")
+    public List<UserResponse> filter(@QueryParam("email") String email) {
+        return userService.filter(email);
+    }
+
+    @GET
     @Path("/{id}")
-    @RolesAllowed({ "User", "Admin" })
+//    @RolesAllowed({ "User", "Admin" })
     @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @APIResponse(responseCode = "404", description = "Not found")
     @APIResponse(responseCode = "500", description = "Internal error")
@@ -59,7 +68,7 @@ public class UserResource {
     }
 
     @POST
-    @RolesAllowed({ "User", "Admin" })
+//    @RolesAllowed({ "User", "Admin" })
     @APIResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @APIResponse(responseCode = "422", content = @Content(schema = @Schema(implementation = ValidationError[].class)))
     @APIResponse(responseCode = "500", description = "Internal error")

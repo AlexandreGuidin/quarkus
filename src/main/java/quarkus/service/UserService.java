@@ -8,6 +8,8 @@ import quarkus.security.CryptUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserService {
@@ -25,5 +27,13 @@ public class UserService {
         UserEntity entity = new UserEntity(request);
         userRepository.persist(entity);
         return new UserResponse(entity);
+    }
+
+
+    public List<UserResponse> filter(String email){
+        return userRepository.find("info->>email", email)
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
     }
 }
